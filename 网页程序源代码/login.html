@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抑郁症语音筛查平台（SRTP测试版） - 登录</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* 登录容器 */
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* 登录头部 */
+        .login-header {
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .app-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-text {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* 登录表单容器 */
+        .login-form-container {
+            padding: 30px 40px;
+        }
+        
+        /* 登录标签 */
+        .login-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .login-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #7f8c8d;
+            background: none;
+            border: none;
+            position: relative;
+        }
+        
+        .login-tab.active {
+            color: #3498db;
+        }
+        
+        .login-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        /* 表单组 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* 表单操作 */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .forgot-password {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        /* 登录底部 */
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .login-footer p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .register-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .register-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 500px) {
+            .login-container {
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .login-header, .login-form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1 class="app-title">抑郁症语音筛查平台（SRTP测试版by梁致源）</h1>
+            <p class="welcome-text" id="welcome-text">欢迎回到抑郁症语音筛查平台（SRTP测试版），您的心理健康管家</p>
+        </div>
+        
+        <div class="login-form-container">
+            <div class="login-tabs">
+                <button class="login-tab active" data-user-type="patient">患者登录</button>
+                <button class="login-tab" data-user-type="doctor">医生登录</button>
+            </div>
+            
+            <form class="login-form" id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名/邮箱</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">登录</button>
+                    <a href="#" class="forgot-password">忘记密码?</a>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>还没有账号? <a href="#" class="register-link">立即注册</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 切换登录标签
+        document.querySelectorAll('.login-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelector('.login-tab.active').classList.remove('active');
+                tab.classList.add('active');
+            });
+        });
+        
+        // 表单提交
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 检查账号和密码
+            if (username === '123' && password === '123') {
+                // 跳转到主页面
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('账号或密码错误，请重试');
+            }
+        });
+    </script>
+</body>
+</html>

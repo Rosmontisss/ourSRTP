@@ -1,0 +1,306 @@
+/* main.css - 全局样式 */
+
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+    line-height: 1.6;
+    background-image: url('https://source.unsplash.com/random/1920x1080/?nature,calm');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* 颜色变量 */
+:root {
+    /* 患者界面颜色 */
+    --patient-primary: #6c5ce7;
+    --patient-secondary: #a29bfe;
+    --patient-accent: #fdcb6e;
+    --patient-warm-bg: rgba(249, 247, 255, 0.9);
+    --patient-text: #333;
+    
+    /* 医生界面颜色 */
+    --doctor-primary: #0984e3;
+    --doctor-secondary: #74b9ff;
+    --doctor-accent: #00cec9;
+    --doctor-cool-bg: rgba(240, 247, 255, 0.9);
+    --doctor-text: #2d3436;
+    
+    /* 公共颜色 */
+    --success: #00b894;
+    --warning: #fdcb6e;
+    --danger: #d63031;
+    --info: #0984e3;
+    --light-gray: #f1f2f6;
+    --medium-gray: #dfe6e9;
+    --dark-gray: #636e72;
+}
+
+/* 按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--patient-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #5f50e0;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--patient-primary);
+    color: var(--patient-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--patient-secondary);
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #00a880;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c22527;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* 图标样式 */
+.icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 应用容器 */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* 顶部导航栏 */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 32px;
+    margin-right: 12px;
+}
+
+.logo h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--patient-primary);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    margin-right: 16px;
+    font-weight: 500;
+}
+
+/* 侧边栏导航 */
+.sidebar {
+    width: 240px;
+    background-color: white;
+    padding-top: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 5px;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--patient-text);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.nav-item.active a {
+    background-color: var(--patient-warm-bg);
+    border-left-color: var(--patient-primary);
+    color: var(--patient-primary);
+}
+
+.nav-item a .icon {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+/* 主内容区 */
+.main-content {
+    flex: 1;
+    padding: 100px 24px 24px 270px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--patient-text);
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .nav-item a span {
+        display: none;
+    }
+    
+    .nav-item a .icon {
+        margin-right: 0;
+    }
+    
+    .main-content {
+        padding-left: 95px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 12px 16px;
+    }
+    
+    .logo h1 {
+        display: none;
+    }
+    
+    .sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        padding-left: 24px;
+    }
+}
+/* 音频推荐区域 */
+.audio-recommendation {
+    margin-bottom: 24px;
+}
+
+.audio-card {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+
+.audio-thumbnail img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.audio-info {
+    flex: 1;
+}
+
+.audio-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.audio-info p {
+    font-size: 14px;
+    color: var(--dark-gray);
+    margin-bottom: 16px;
+}
+
+.audio-actions {
+    display: flex;
+    gap: 8px;
+}

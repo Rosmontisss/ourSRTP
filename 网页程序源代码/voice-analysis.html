@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抑郁症语音筛查平台（SRTP测试版） - 分析报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* 顶部导航栏 */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 32px;
+            margin-right: 12px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            margin-right: 16px;
+            font-weight: 500;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #2c3e50;
+        }
+        
+        /* 分析报告卡片 */
+        .report-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .report-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .report-date {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* 分析结果 */
+        .analysis-result {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        
+        .result-item {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .result-item.highlight {
+            background-color: #e8f4fd;
+            border: 1px solid #3498db;
+        }
+        
+        .result-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .result-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* 情绪状态 */
+        .mood-status {
+            margin-bottom: 24px;
+        }
+        
+        .mood-status-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+        
+        .mood-status-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #34495e;
+        }
+        
+        /* 建议区域 */
+        .recommendations {
+            margin-bottom: 24px;
+        }
+        
+        .recommendations-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+        
+        .recommendation-list {
+            list-style: none;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .recommendation-icon {
+            margin-right: 12px;
+            color: #3498db;
+            font-size: 20px;
+        }
+        
+        .recommendation-text {
+            font-size: 14px;
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        /* 数据可视化 */
+        .data-visualization {
+            margin-bottom: 24px;
+        }
+        
+        .visualization-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-bottom: 24px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .analysis-result {
+                flex-direction: column;
+            }
+            
+            .result-item {
+                margin-bottom: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="抑郁症语音筛查平台">
+            <h1>抑郁症语音筛查平台（SRTP测试版）</h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="avatar">
+                <img src="assets/images/default-avatar.png" alt="用户头像">
+            </div>
+            <span class="user-name">张三</span>
+            <button class="btn btn-outline" id="logout-btn">退出</button>
+        </div>
+    </header>
+    
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <h1 class="page-title">语音分析报告</h1>
+        
+        <!-- 分析概览 -->
+        <section class="report-card">
+            <div class="report-header">
+                <h2 class="report-title">分析概览</h2>
+                <span class="report-date">2025-4-9 14:30</span>
+            </div>
+            
+            <div class="analysis-result">
+                <div class="result-item highlight">
+                    <div class="result-value">72%</div>
+                    <div class="result-label">情绪稳定性</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value">45%</div>
+                    <div class="result-label">焦虑水平</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value">32%</div>
+                    <div class="result-label">抑郁倾向</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value">68%</div>
+                    <div class="result-label">压力水平</div>
+                </div>
+            </div>
+            
+            <div class="mood-status">
+                <h3 class="mood-status-title">情绪状态总结</h3>
+                <p class="mood-status-content">
+                    根据您的语音分析结果，您当前的情绪状态表现为中等程度的焦虑和轻微的抑郁倾向。建议您保持良好的作息习惯，适当进行放松训练，并考虑与专业人士进行进一步沟通。
+                </p>
+            </div>
+        </section>
+        
+        <!-- 情绪指标 -->
+        <section class="report-card">
+            <h3 class="visualization-title">情绪指标</h3>
+            <div class="chart-container">
+                <canvas id="mood-chart"></canvas>
+            </div>
+            
+            <h3 class="visualization-title">情绪趋势（过去30天）</h3>
+            <div class="chart-container">
+                <canvas id="trend-chart"></canvas>
+            </div>
+        </section>
+        
+        <!-- 建议区域 -->
+        <section class="report-card">
+            <h3 class="recommendations-title">专业建议</h3>
+            <ul class="recommendation-list">
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">✓</div>
+                    <div class="recommendation-text">
+                        建议您每天进行20分钟的冥想练习，帮助缓解焦虑和压力。
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">✓</div>
+                    <div class="recommendation-text">
+                        保持规律的作息时间，每天保证7-8小时的睡眠。
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">✓</div>
+                    <div class="recommendation-text">
+                        尝试进行适量的有氧运动，如散步、慢跑或瑜伽。
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">✓</div>
+                    <div class="recommendation-text">
+                        如果情绪状态持续不佳，建议尽快预约心理咨询。
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+    
+    <script>
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 情绪指标图表
+            const moodCtx = document.getElementById('mood-chart').getContext('2d');
+            const moodChart = new Chart(moodCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['情绪稳定性', '焦虑水平', '抑郁倾向', '压力水平'],
+                    datasets: [{
+                        label: '情绪指标 (%)',
+                        data: [72, 45, 32, 68],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.6)',
+                            'rgba(231, 76, 60, 0.6)',
+                            'rgba(155, 89, 182, 0.6)',
+                            'rgba(241, 196, 15, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(241, 196, 15, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+            
+            // 情绪趋势图表
+            const trendCtx = document.getElementById('trend-chart').getContext('2d');
+            const trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['第1天', '第5天', '第10天', '第15天', '第20天', '第25天', '第30天'],
+                    datasets: [{
+                        label: '情绪稳定性',
+                        data: [65, 68, 70, 72, 70, 73, 72],
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '焦虑水平',
+                        data: [55, 50, 48, 45, 47, 46, 45],
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '抑郁倾向',
+                        data: [40, 38, 35, 32, 34, 33, 32],
+                        borderColor: 'rgba(155, 89, 182, 1)',
+                        backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

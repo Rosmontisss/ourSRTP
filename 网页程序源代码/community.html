@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抑郁症语音筛查平台（SRTP测试版） - 社区圈</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        /* 应用容器 */
+        .app-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+        
+        /* 顶部导航栏 */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 32px;
+            margin-right: 12px;
+        }
+        
+        .logo h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            margin-right: 16px;
+            font-weight: 500;
+        }
+        
+        /* 侧边栏导航 */
+        .sidebar {
+            width: 240px;
+            background-color: white;
+            padding-top: 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #34495e;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item.active a {
+            background-color: #f8f9fa;
+            border-left-color: #3498db;
+            color: #3498db;
+            font-weight: 500;
+        }
+        
+        .nav-item a .icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 100px 24px 24px 270px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+        
+        /* 群组列表 */
+        .group-list {
+            margin-bottom: 24px;
+        }
+        
+        .group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .group-info {
+            flex: 1;
+        }
+        
+        .group-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .group-info p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* 创建群组 */
+        .create-group {
+            margin-bottom: 24px;
+        }
+        
+        .create-group-form {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .nav-item a span {
+                display: none;
+            }
+            
+            .nav-item a .icon {
+                margin-right: 0;
+            }
+            
+            .main-content {
+                padding-left: 95px;
+            }
+            
+            .logo h1 {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <div class="logo">
+                <img src="assets\images\logo.jpg" alt="抑郁症语音筛查平台（SRTP测试版）">
+                <h1>抑郁症语音筛查平台（SRTP测试版）</h1>
+            </div>
+            
+            <div class="user-info">
+                <div class="avatar" id="user-avatar">
+                    <img src="assets\images\default-avatar.png" alt="用户头像">
+                </div>
+                <span class="user-name" id="user-name">苟*金</span>
+                <button class="btn btn-outline" id="logout-btn">退出</button>
+            </div>
+        </header>
+        
+        <!-- 侧边栏导航 -->
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="dashboard.html">
+                        <i class="icon home"></i>
+                        <span>主页</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="community.html">
+                        <i class="icon community"></i>
+                        <span>社区圈</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="chat.html">
+                        <i class="icon chat"></i>
+                        <span>聊天</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="voice-collection.html">
+                        <i class="icon voice"></i>
+                        <span>语音采集</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="wearables.html">
+                        <i class="icon wearables"></i>
+                        <span>医生预约（中大医院）</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="icon profile"></i>
+                        <span>个人中心</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 群组列表 -->
+            <section class="group-list">
+                <h2 class="section-title">群组列表</h2>
+                <div class="group-item">
+                    <div class="group-info">
+                        <h3>抑郁症支持群</h3>
+                        <p>一个为抑郁症患者提供支持和交流的群组</p>
+                    </div>
+                    <button class="btn btn-sm btn-primary">加入群组</button>
+                </div>
+                <div class="group-item">
+                    <div class="group-info">
+                        <h3>心理健康交流群</h3>
+                        <p>一个关于心理健康知识交流的群组</p>
+                    </div>
+                    <button class="btn btn-sm btn-primary">加入群组</button>
+                </div>
+            </section>
+            
+            <!-- 创建群组 -->
+            <section class="create-group">
+                <h2 class="section-title">创建群组</h2>
+                <form class="create-group-form">
+                    <div class="form-group">
+                        <label for="group-name">群组名称</label>
+                        <input type="text" id="group-name" name="group-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-description">群组描述</label>
+                        <textarea id="group-description" name="group-description" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">创建群组</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 退出按钮
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                window.location.href = 'login.html';
+            });
+            
+            // 导航项点击事件
+            document.querySelectorAll('.nav-item a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('.nav-item.active').classList.remove('active');
+                    this.parentElement.classList.add('active');
+                    
+                    // 跳转到相应的页面
+                    window.location.href = this.getAttribute('href');
+                });
+            });
+            
+            // 创建群组表单提交
+            document.querySelector('.create-group-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const groupName = document.getElementById('group-name').value;
+                const groupDescription = document.getElementById('group-description').value;
+                
+                if (groupName && groupDescription) {
+                    alert('群组创建成功！');
+                    this.reset();
+                }
+            });
+            
+            // 加入群组按钮
+            document.querySelectorAll('.group-item .btn-primary').forEach(button => {
+                button.addEventListener('click', function() {
+                    const groupName = this.closest('.group-item').querySelector('h3').textContent;
+                    alert(`已申请加入 ${groupName}，请等待管理员审核。`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+/* 群组列表 */
+.group-list {
+    margin-bottom: 24px;
+}
+
+.group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.group-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.group-info p {
+    font-size: 14px;
+    color: var(--dark-gray);
+}
+
+/* 创建群组 */
+.create-group {
+    margin-bottom: 24px;
+}
+
+.create-group-form .form-group {
+    margin-bottom: 16px;
+}
+
+.create-group-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.create-group-form input[type="text"],
+.create-group-form textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--medium-gray);
+}
+
+.create-group-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.create-group-form .form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
